@@ -33,9 +33,6 @@ export default function CancelBookingButton({
       <input type="hidden" name="bookingId" value={bookingId} />
       <div>
         <h2 className="text-sm font-semibold text-rose-700">Cancel booking</h2>
-        <p className="text-xs text-rose-600">
-          Cancellations within 2 hours of departure are blocked.
-        </p>
       </div>
 
       {state.error ? (
