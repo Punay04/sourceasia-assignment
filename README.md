@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FlightDesk
 
-## Getting Started
+FlightDesk is a flight management web app for searching flights, reserving seats in real time, and managing bookings (reschedule/cancel). It uses Next.js App Router with Supabase (Postgres + Auth + Realtime), Zustand, and Tailwind.
 
-First, run the development server:
+## Setup
+
+1. Install dependencies.
+
+```bash
+npm install
+```
+
+2. Create a local `.env` file.
+
+```bash
+cp .env.example .env
+```
+
+3. Fill the Supabase values in `.env`.
+
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+## Supabase project setup
+
+1. Create a new Supabase project.
+2. Apply the SQL migrations in order:
+   - supabase/migrations/001_init.sql
+   - supabase/migrations/002_reschedule_rpc.sql
+3. Run the seed file:
+   - supabase/seed/seed.sql
+4. Enable Realtime for the `seats` table in Supabase Dashboard.
+
+## Test user (seeded)
+
+- Email: test.user@demo.com
+- Password: Passw0rd!
+
+## Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Zustand store structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### useFlightStore
 
-## Learn More
+- `searchQuery`: active search inputs
+- `selectedFlight`: selected flight details
+- `selectedSeat`: selected seat details
+- `bookingStep`: flow status
+- `passengerForm`: passenger input state
+- `resetBooking`: clears booking state
 
-To learn more about Next.js, take a look at the following resources:
+The store uses `persist` with `partialize` so `passportNo` never lands in localStorage.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### useUserStore
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `session`: cached auth session token
+- `cachedBookings`: optional cache for offline list view
+- `resetUser`: clears user state on logout
 
-## Deploy on Vercel
+Only the `session` is persisted.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## PWA notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Manifest at public/manifest.json
+- Icons at public/icons/icon-192.png and public/icons/icon-512.png
+- Offline fallback at /offline
+- Install prompt shows on mobile when available
+
+## Testing checklist
+
+- Search route works and shows flights
+- Booking flow completes with PNR and seat
+- Realtime seat updates in two tabs
+- Reschedule updates booking and logs reschedule
+- Cancel blocks within 2 hours of departure
+- Zustand persists search/seat, excludes passport
+- Lighthouse PWA score >= 90 (bonus)
+
+## Deployment
+
+Deploy on Vercel and add the production URL to this README.
+
+Production URL: <add your deployed URL here>
+
+Lighthouse PWA screenshot: add to this repo (for example, at docs/lighthouse-pwa.png) and reference it here.
