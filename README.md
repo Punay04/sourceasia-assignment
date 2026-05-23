@@ -91,3 +91,5 @@ Only the `session` is persisted.
 Preview URL: https://sourceasia-assignment.vercel.app/
 
 Lighthouse PWA screenshot: public/docs/lighthouse-pwa.png
+
+![Lighthouse PWA report](public/docs/lighthouse-pwa.png)
