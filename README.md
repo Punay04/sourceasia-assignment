@@ -16,7 +16,7 @@ npm install
 cp .env.example .env
 ```
 
-3. Fill the Supabase values in `.env`.
+3. Fill the Supabase values in `.env` (see .env.example).
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
@@ -30,6 +30,7 @@ SUPABASE_SERVICE_ROLE_KEY=
 2. Apply the SQL migrations in order:
    - supabase/migrations/001_init.sql
    - supabase/migrations/002_reschedule_rpc.sql
+   - supabase/migrations/003_realtime_seats.sql
 3. Run the seed file:
    - supabase/seed/seed.sql
 4. Enable Realtime for the `seats` table in Supabase Dashboard.
@@ -87,8 +88,6 @@ Only the `session` is persisted.
 
 ## Deployment
 
-Deploy on Vercel and add the production URL to this README.
+Preview URL: https://sourceasia-assignment.vercel.app/
 
-Production URL: <add your deployed URL here>
-
-Lighthouse PWA screenshot: add to this repo (for example, at docs/lighthouse-pwa.png) and reference it here.
+Lighthouse PWA screenshot: public/docs/lighthouse-pwa.png
